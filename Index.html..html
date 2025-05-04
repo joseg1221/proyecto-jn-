@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para ti, mi corazón 💌</title>
+    <style>
+        /* RESET MEJORADO */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        /* ESTILOS GENERALES MEJORADOS */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 100%);
+            color: #fff;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* MEJORAS EN PORTADA */
+        #portada {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        #video-fondo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.7;
+            transition: opacity 1s ease;
+        }
+
+        #portada h1 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: fadeIn 1.5s ease;
+        }
+
+        #portada p {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            margin-bottom: 30px;
+            max-width: 800px;
+            animation: fadeIn 2s ease;
+        }
+
+        /* BOTÓN MEJORADO */
+        .btn-romantico {
+            background: linear-gradient(45deg, #ff4d4d 0%, #f9cb28 100%);
+            border: none;
+            padding: clamp(12px, 3vw, 18px) clamp(25px, 6vw, 45px);
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            border-radius: 50px;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(255, 77, 77, 0.7);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-romantico::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f9cb28 0%, #ff4d4d 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-romantico:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 77, 77, 0.9);
+        }
+
+        .btn-romantico:hover::before {
+            opacity: 1;
+        }
+
+        .btn-romantico:active {
+            transform: scale(0.98);
+        }
+
+        /* GALERÍA MEJORADA */
+        #galeria {
+            padding: 50px 20px;
+            text-align: center;
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        #galeria.visible {
+            opacity: 1;
+        }
+
+        #galeria h2 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease;
+        }
+
+        .grid-galeria {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .momento {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            aspect-ratio: 1/1;
+        }
+
+        .momento:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .momento img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .momento:hover img {
+            transform: scale(1.1);
+        }
+
+        .momento .descripcion {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+            color: white;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+        }
+
+        .momento:hover .descripcion {
+            transform: translateY(0);
+        }
+
+        /* SECCIÓN FINAL MEJORADA */
+        #pregunta-final {
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            background: linear-gradient(135deg, #302b63 0%, #0f0c29 100%);
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        #pregunta-final.visible {
+            opacity: 1;
+        }
+
+        .corazon {
+            font-size: clamp(3rem, 10vw, 5rem);
+            margin: 20px 0;
+            animation: latido 1.5s infinite, fadeIn 1s ease;
+        }
+
+        #pregunta-final h2 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            margin-bottom: 15px;
+            animation: fadeIn 1s ease;
+        }
+
+        #pregunta-final p {
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            margin-bottom: 30px;
+            max-width: 600px;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .contenedor-botones {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            animation: fadeIn 2s ease;
+        }
+
+        /* ANIMACIONES MEJORADAS */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes latido {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes confeti {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes temblor {
+            0% { transform: translateX(-5px); }
+            100% { transform: translateX(5px); }
+        }
+
+        /* EFECTO DE CONFETI MEJORADO */
+        .confeti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+            z-index: 999;
+            animation: confeti 5s ease-in-out forwards;
+            border-radius: 50%;
+        }
+
+        /* CARITAS TRISTES */
+        .caritas-tristes {
+            font-size: clamp(3rem, 10vw, 5rem);
+            margin: 20px 0;
+            animation: temblor 0.5s infinite alternate, fadeIn 1s ease;
+        }
+
+        /* RESPONSIVE MEJORADO */
+        @media (max-width: 768px) {
+            .grid-galeria {
+                grid-template-columns: 1fr;
+            }
+            
+            .contenedor-botones {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-romantico {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        /* LOADER PARA CARGA */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f0c29, #302b63);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader .corazon {
+            font-size: 4rem;
+            animation: latido 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+        <div class="corazon">❤️</div>
+    </div>
+
+    <!-- PORTADA CON VIDEO -->
+    <section id="portada">
+        <video id="video-fondo" autoplay muted loop playsinline>
+            <source src="Mi Proyecto nv/Video/Video1.mp4" type="video/mp4">
+            <!-- Fallback para navegadores sin soporte de video -->
+            <img src="Mi Proyecto nv/Imagen/falback.jpg" alt="Fondo alternativo">
+        </video>
+        <h1>Hola, <span id="nombre-crush">Mi niña🥺</span></h1>
+        <p>En toda la historia de mi vida, eres tú mi persona favorita...</p>
+        <button class="btn-romantico" onclick="mostrarGaleria()">Descubre por qué</button>
+    </section>
+
+    <!-- GALERÍA DE MOMENTOS -->
+    <section id="galeria">
+        <h2>Foto y Mensaje</h2>
+        
+        <div class="grid-galeria">
+            <div class="momento">
+                <img src="Mi proyecto nv/Imagen/imagen1.jpg" alt="Mi Reina 😍👑">
+                <div class="descripcion">El día que te conocí, supe que eras especial ❤️</div>
+            </div>
+            
+            <div class="momento">
+                <img src="Mi proyecto nv/Imagen/imagen 2.jpg" alt="Mi Princesa💞🥺">
+                <div class="descripcion">Cuando me hiciste reír hasta dolerme el estómago 😂</div>
+            </div>
+            
+            <div class="momento">
+                <img src="Mi proyecto nv/Imagen/Imagen3.jpg" alt="Mi Doctora😌🦷">
+                <div class="descripcion">Esa vez que me demostraste tu lado más dulce 🍬</div>
+            </div>
+            
+            <div class="momento">
+                <img src="Mi proyecto nv/Imagen/imagen5.jpg" alt="Mi Amor💖">
+                <div class="descripcion">Nuestro primer viaje juntos ✈️🌎</div>
+            </div>
+            
+            <div class="momento">
+                <img src="Mi proyecto nv/Imagen/Imagen4.jpg" alt="Mi Compañera de vida">
+                <div class="descripcion">Cuando me apoyaste en los momentos difíciles 🤗</div>
+            </div>
+            
+            <div class="momento">
+                <img src="Mi proyecto nv/Imagen/Imagen6.jpg" alt="Mi Razón de sonreír">
+                <div class="descripcion">Tus locuras que me roban el corazón cada día 🤪</div>
+            </div>
+            
+            <div class="momento">
+                <img src="Mi proyecto nv/Imagen/imagen7.jpg" alt="Mi Todo">
+                <div class="descripcion">Esa mirada tuya que me derrite por completo 🥰</div>
+            </div>
+        </div>
+        
+        <button class="btn-romantico" onclick="mostrarPreguntaFinal()" style="margin-top: 50px;">Continuar</button>
+    </section>
+
+    <!-- PREGUNTA FINAL -->
+    <section id="pregunta-final">
+        <div class="corazon">❤️</div>
+        <h2>Después de todos estos momentos...</h2>
+        <p>¿Me harías el más feliz siendo mi novia?</p>
+        
+        <div class="contenedor-botones">
+            <button class="btn-romantico" onclick="aceptado()">¡Sí, por supuesto!</button>
+            <button class="btn-romantico" onclick="necesitoPensarlo()" style="background: linear-gradient(45deg, #666 0%, #999 100%);">Necesito pensarlo</button>
+        </div>
+    </section>
+
+    <script>
+        // LOADER
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(function() {
+                    document.getElementById('loader').style.display = 'none';
+                }, 500);
+            }, 1500);
+        });
+
+        // FUNCIONES PRINCIPALES MEJORADAS
+        function mostrarGaleria() {
+            document.getElementById('portada').style.opacity = '0';
+            
+            setTimeout(function() {
+                document.getElementById('portada').style.display = 'none';
+                document.getElementById('galeria').style.display = 'block';
+                
+                setTimeout(function() {
+                    document.getElementById('galeria').classList.add('visible');
+                }, 50);
+                
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }, 500);
+        }
+
+        function mostrarPreguntaFinal() {
+            document.getElementById('galeria').style.opacity = '0';
+            
+            setTimeout(function() {
+                document.getElementById('galeria').style.display = 'none';
+                document.getElementById('pregunta-final').style.display = 'flex';
+                
+                setTimeout(function() {
+                    document.getElementById('pregunta-final').classList.add('visible');
+                }, 50);
+                
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }, 500);
+        }
+
+        function aceptado() {
+            // Crear confeti antes del alert
+            crearConfeti();
+            
+            setTimeout(function() {
+                Swal.fire({
+                    title: '¡Sabía que dirías que sí! 💞',
+                    text: 'Ahora somos oficialmente novios. Te amo más que a nada en este mundo‎😍💞💍.',
+                    icon: 'success',
+                    confirmButtonText: '¡Te amo!',
+                    background: 'linear-gradient(135deg, #302b63 0%, #0f0c29 100%)',
+                    color: '#fff',
+                    confirmButtonColor: '#ff4d4d',
+                    backdrop: `
+                        rgba(0,0,0,0.7)
+                        url("Mi proyecto nv/Imagen/Imagen8.jpg")
+                        center top
+                        no-repeat
+                    `
+                });
+            }, 1000);
+        }
+
+        function necesitoPensarlo() {
+            const seccion = document.getElementById('pregunta-final');
+            seccion.innerHTML = `
+                <div style="text-align: center; width: 100%;">
+                    <div class="caritas-tristes">😢😭😔😞🥺</div>
+                    <h2>Por favor, piénsalo bien...</h2>
+                    <p>Te prometo que seré el mejor del mundo solo por ti🥹</p>
+                    <div class="contenedor-botones">
+                        <button class="btn-romantico" onclick="aceptado()">¡Vale, acepto!</button>
+                        <button class="btn-romantico" onclick="location.reload()" style="background: linear-gradient(45deg, #666 0%, #999 100%);">Ver de nuevo</button>
+                    </div>
+                </div>
+            `;
+            
+            // Asegurar que la animación se aplique
+            setTimeout(function() {
+                document.querySelector('.caritas-tristes').style.animation = 'temblor 0.5s infinite alternate, fadeIn 1s ease';
+            }, 50);
+        }
+
+        // CONFETI MEJORADO
+        function crearConfeti() {
+            const colores = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ff9900', '#9900ff'];
+            const formas = ['circle', 'square', 'triangle'];
+            
+            for (let i = 0; i < 200; i++) {
+                const confeti = document.createElement('div');
+                confeti.className = 'confeti';
+                confeti.style.backgroundColor = colores[Math.floor(Math.random() * colores.length)];
+                confeti.style.left = Math.random() * 100 + 'vw';
+                confeti.style.width = Math.random() * 15 + 5 + 'px';
+                confeti.style.height = Math.random() * 15 + 5 + 'px';
+                confeti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                confeti.style.animationDelay = Math.random() * 2 + 's';
+                
+                // Formas diferentes
+                if (Math.random() > 0.7) {
+                    confeti.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+                } else if (Math.random() > 0.5) {
+                    confeti.style.borderRadius = '0';
+                }
+                
+                document.body.appendChild(confeti);
+                
+                // Eliminar el confeti después de la animación
+                setTimeout(() => {
+                    confeti.remove();
+                }, 7000);
+            }
+        }
+
+        // CAMBIAR NOMBRE DINÁMICAMENTE (OPCIONAL)
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const nombre = urlParams.get('nombre');
+            
+            if (nombre) {
+                document.getElementById('nombre-crush').textContent = nombre;
+            }
+            
+            // Precarga de imágenes para mejor experiencia
+            const imagenes = [
+                'Mi proyecto nv/Imagen/imagen1.jpg',
+                'Mi proyecto nv/Imagen/imagen 2.jpg',
+                'Mi proyecto nv/Imagen/Imagen3.jpg',
+                'Mi proyecto nv/Imagen/imagen5.jpg',
+                'Mi proyecto nv/Imagen/Imagen.jpg',
+                'Mi proyecto nv/Imagen/Imagen6.jpg',
+                'Mi proyecto nv/Imagen/Imagen7.jpg'
+            ];
+            
+            imagenes.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+        });
+
+        // SWEETALERT2 PARA MEJORES ALERTAS (OPCIONAL)
+        const sweetAlertScript = document.createElement('script');
+        sweetAlertScript.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+        document.head.appendChild(sweetAlertScript);
+    </script>
+</body>
+</html>
